@@ -1,0 +1,179 @@
+const buildDefinitionReference = (referenceId) => ({ $ref: `#/definitions/${referenceId}` });
+
+const schema = {
+  $schema: 'http://json-schema.org/draft-04/schema#',
+  type: 'object',
+  definitions: {
+    fullName: {
+      type: 'object',
+      properties: {
+        first: { type: 'string', example: 'John', maxLength: 12 },
+        middle: { type: 'string', example: 'A', maxLength: 1, nullable: true },
+        last: { type: 'string', example: 'Doe', maxLength: 18 },
+      },
+    },
+    simpleAddress: {
+      type: 'object',
+      properties: {
+        street: { type: 'string', example: '123 Main St', maxLength: 30 },
+        street2: { type: 'string', example: 'Apt 4', maxLength: 5, nullable: true },
+        city: { type: 'string', example: 'Springfield', maxLength: 18 },
+        state: { type: 'string', example: 'IL', maxLength: 2 },
+        postalCode: { type: 'string', example: '62701', maxLength: 9 },
+        country: { type: 'string', example: 'US', maxLength: 2 },
+      },
+    },
+  },
+  properties: {
+    veteranInformation: {
+      type: 'object',
+      required: ['fullName', 'ssn', 'dateOfBirth'],
+      description: "Section I: VETERAN'S IDENTIFICATION INFORMATION",
+      properties: {
+        fullName: buildDefinitionReference('fullName'),
+        ssn: {
+          type: 'string',
+          example: '123456789',
+          description: 'Social Security Number (9 digits)',
+          pattern: '^\\d{9}$',
+          maxLength: 9,
+          minLength: 9,
+        },
+        vaFileNumber: {
+          type: 'string',
+          example: '987654321',
+          description: 'VA File Number',
+          maxLength: 9,
+        },
+        serviceNumber: {
+          type: 'string',
+          example: 'A2999999',
+          description: "VETERAN'S SERVICE NUMBER ",
+          maxLength: 10,
+          nullable: true,
+        },
+        dateOfBirth: {
+          type: 'string',
+          format: 'date',
+          example: '1950-01-01',
+          description: 'Date of Birth',
+        },
+      },
+    },
+    claimantInformation: {
+      type: 'object',
+      required: ['fullName', 'relationship', 'address'],
+      description: "Section II: CLAIMANT'S IDENTIFICATION INFORMATION",
+      properties: {
+        fullName: buildDefinitionReference('fullName'),
+        dateOfBirth: {
+          type: 'string',
+          format: 'date',
+          example: '1950-01-01',
+          description: 'Date of Birth',
+        },
+        ssn: {
+          type: 'string',
+          example: '123456789',
+          description: 'Social Security Number (9 digits)',
+          pattern: '^\\d{9}$',
+          maxLength: 9,
+          minLength: 9,
+        },
+        relationship: {
+          type: 'string',
+          example: 'spouse',
+          description: 'Relationship to veteran',
+          enum: ['self', 'spouse', 'parent', 'child'],
+          nullable: true,
+        },
+        address: buildDefinitionReference('simpleAddress'),
+        phoneNumber: {
+          type: 'string',
+          example: '5551234567',
+          pattern: '^\\d{10}$',
+          description: 'Phone Number',
+          maxLength: 10,
+          minLength: 10,
+          nullable: true,
+        },
+        internationalPhoneNumber: {
+          type: 'string',
+          example: '5551234567',
+          description: 'Phone Number',
+          nullable: true,
+        },
+        agreeToElectronicCorrespondence: {
+          type: 'boolean',
+          example: true,
+        },
+        email: {
+          type: 'string',
+          example: 'test@va.gov',
+          description: 'Email Address',
+          maxLength: 70,
+          nullable: true,
+        },
+      },
+    },
+    benefitInformation: {
+      type: 'object',
+      required: ['benefitSelection'],
+      description: 'SECTION III: CLAIM INFORMATION',
+      properties: {
+        benefitSelection: {
+          type: 'string',
+          example: 'smc',
+          description: 'Type of benefit being claimed',
+          enum: ['smc', 'smp'],
+        },
+      },
+    },
+    additionalInformation: {
+      type: 'object',
+      description: 'Section IV: IS VETERAN/CLAIMANT HOSPITALIZED?',
+      required: ['currentlyHospitalized'],
+      properties: {
+        currentlyHospitalized: {
+          type: 'boolean',
+          example: false,
+          description: 'Is veteran currently hospitalized?',
+        },
+        admissionDate: {
+          type: 'string',
+          format: 'date',
+          example: '2023-01-01',
+          description: 'Date admitted',
+          nullable: true,
+        },
+        hospitalName: {
+          type: 'string',
+          example: 'VA Medical Center',
+          description: 'Name of hospital',
+          nullable: true,
+        },
+        hospitalAddress: buildDefinitionReference('simpleAddress'),
+      },
+    },
+    veteranSignature: {
+      type: 'object',
+      required: ['signature', 'date'],
+      description: 'Section V: CERTIFICATION AND SIGNATURE',
+      properties: {
+        signature: {
+          type: 'string',
+          example: 'John A Doe',
+          description: 'Signature of veteran or claimant',
+        },
+        date: {
+          type: 'string',
+          format: 'date',
+          example: '2025-10-20',
+          description: 'Date signed (must be within last 60 days)',
+        },
+      },
+    },
+  },
+};
+
+export default schema;
