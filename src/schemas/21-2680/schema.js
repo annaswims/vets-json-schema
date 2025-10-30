@@ -1,4 +1,4 @@
-const buildDefinitionReference = (referenceId) => ({ $ref: `#/definitions/${referenceId}` });
+const buildDefinitionReference = referenceId => ({ $ref: `#/definitions/${referenceId}` });
 
 const schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
@@ -8,7 +8,7 @@ const schema = {
       type: 'object',
       properties: {
         first: { type: 'string', example: 'John', maxLength: 12 },
-        middle: { type: 'string', example: 'A', maxLength: 1, nullable: true },
+        middle: { type: ['string', 'null'], example: 'A', maxLength: 1 },
         last: { type: 'string', example: 'Doe', maxLength: 18 },
       },
     },
@@ -16,7 +16,7 @@ const schema = {
       type: 'object',
       properties: {
         street: { type: 'string', example: '123 Main St', maxLength: 30 },
-        street2: { type: 'string', example: 'Apt 4', maxLength: 5, nullable: true },
+        street2: { type: ['string', 'null'], example: 'Apt 4', maxLength: 5 },
         city: { type: 'string', example: 'Springfield', maxLength: 18 },
         state: { type: 'string', example: 'IL', maxLength: 2 },
         postalCode: { type: 'string', example: '62701', maxLength: 9 },
@@ -46,11 +46,10 @@ const schema = {
           maxLength: 9,
         },
         serviceNumber: {
-          type: 'string',
+          type: ['string', 'null'],
           example: 'A2999999',
           description: "VETERAN'S SERVICE NUMBER ",
           maxLength: 10,
-          nullable: true,
         },
         dateOfBirth: {
           type: 'string',
@@ -81,38 +80,34 @@ const schema = {
           minLength: 9,
         },
         relationship: {
-          type: 'string',
+          type: ['string', 'null'],
           example: 'spouse',
           description: 'Relationship to veteran',
           enum: ['self', 'spouse', 'parent', 'child'],
-          nullable: true,
         },
         address: buildDefinitionReference('simpleAddress'),
         phoneNumber: {
-          type: 'string',
+          type: ['string', 'null'],
           example: '5551234567',
           pattern: '^\\d{10}$',
           description: 'Phone Number',
           maxLength: 10,
           minLength: 10,
-          nullable: true,
         },
         internationalPhoneNumber: {
-          type: 'string',
+          type: ['string', 'null'],
           example: '5551234567',
           description: 'Phone Number',
-          nullable: true,
         },
         agreeToElectronicCorrespondence: {
           type: 'boolean',
           example: true,
         },
         email: {
-          type: 'string',
+          type: ['string', 'null'],
           example: 'test@va.gov',
           description: 'Email Address',
           maxLength: 70,
-          nullable: true,
         },
       },
     },
@@ -140,17 +135,15 @@ const schema = {
           description: 'Is veteran currently hospitalized?',
         },
         admissionDate: {
-          type: 'string',
+          type: ['string', 'null'],
           format: 'date',
           example: '2023-01-01',
           description: 'Date admitted',
-          nullable: true,
         },
         hospitalName: {
-          type: 'string',
+          type: ['string', 'null'],
           example: 'VA Medical Center',
           description: 'Name of hospital',
-          nullable: true,
         },
         hospitalAddress: buildDefinitionReference('simpleAddress'),
       },
@@ -174,6 +167,7 @@ const schema = {
       },
     },
   },
+  required: ['veteranInformation', 'benefitInformation', 'additionalInformation', 'veteranSignature'],
 };
 
 export default schema;

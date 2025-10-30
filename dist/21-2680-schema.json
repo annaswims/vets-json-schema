@@ -11,10 +11,12 @@
           "maxLength": 12
         },
         "middle": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "A",
-          "maxLength": 1,
-          "nullable": true
+          "maxLength": 1
         },
         "last": {
           "type": "string",
@@ -32,10 +34,12 @@
           "maxLength": 30
         },
         "street2": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "Apt 4",
-          "maxLength": 5,
-          "nullable": true
+          "maxLength": 5
         },
         "city": {
           "type": "string",
@@ -88,11 +92,13 @@
           "maxLength": 9
         },
         "serviceNumber": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "A2999999",
           "description": "VETERAN'S SERVICE NUMBER ",
-          "maxLength": 10,
-          "nullable": true
+          "maxLength": 10
         },
         "dateOfBirth": {
           "type": "string",
@@ -129,7 +135,10 @@
           "minLength": 9
         },
         "relationship": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "spouse",
           "description": "Relationship to veteran",
           "enum": [
@@ -137,37 +146,42 @@
             "spouse",
             "parent",
             "child"
-          ],
-          "nullable": true
+          ]
         },
         "address": {
           "$ref": "#/definitions/simpleAddress"
         },
         "phoneNumber": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "5551234567",
           "pattern": "^\\d{10}$",
           "description": "Phone Number",
           "maxLength": 10,
-          "minLength": 10,
-          "nullable": true
+          "minLength": 10
         },
         "internationalPhoneNumber": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "5551234567",
-          "description": "Phone Number",
-          "nullable": true
+          "description": "Phone Number"
         },
         "agreeToElectronicCorrespondence": {
           "type": "boolean",
           "example": true
         },
         "email": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "test@va.gov",
           "description": "Email Address",
-          "maxLength": 70,
-          "nullable": true
+          "maxLength": 70
         }
       }
     },
@@ -202,17 +216,21 @@
           "description": "Is veteran currently hospitalized?"
         },
         "admissionDate": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date",
           "example": "2023-01-01",
-          "description": "Date admitted",
-          "nullable": true
+          "description": "Date admitted"
         },
         "hospitalName": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "example": "VA Medical Center",
-          "description": "Name of hospital",
-          "nullable": true
+          "description": "Name of hospital"
         },
         "hospitalAddress": {
           "$ref": "#/definitions/simpleAddress"
@@ -240,5 +258,11 @@
         }
       }
     }
-  }
+  },
+  "required": [
+    "veteranInformation",
+    "benefitInformation",
+    "additionalInformation",
+    "veteranSignature"
+  ]
 }
