@@ -1,1 +1,1 @@
-export default require('../../schemas/21P-527EZ-kitchen_sink/example.json');
+export default require('../../schemas/21-2680-simple/example.json');
